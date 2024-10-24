@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { User, Search, Plus, Camera, Film, Star, Mail, Phone, MapPin, Award } from 'lucide-react'
+import { User, Search, Plus, Camera, Film, Star, Mail,  MapPin, Award } from 'lucide-react'
 
 // Mock data for talent
 const mockTalent = [
