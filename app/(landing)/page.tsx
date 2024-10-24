@@ -97,7 +97,7 @@ export default function LandingPage() {
               transition={{ duration: 0.8 }}
               className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight"
             >
-              Revolutionize Your <span className="text-blue-400">Filmmaking</span> Process
+              Revolutionize Your <span className="text-blue-400">Filmmaking</span> Process with AI
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
