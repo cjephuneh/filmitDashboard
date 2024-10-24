@@ -14,11 +14,14 @@ import { Icons } from "@/components/ui/icons"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Switch } from "@/components/ui/switch"
+import { useRouter } from 'next/navigation'
+
 
 export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const router = useRouter()
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,9 +39,9 @@ export default function LandingPage() {
   }
 
   const testimonials = [
-    { name: "Christopher Nolan", role: "Director", quote: "FilmDash revolutionized how we manage our productions. It's an indispensable tool for any serious filmmaker." },
-    { name: "Ava DuVernay", role: "Producer", quote: "The collaborative features in FilmDash have streamlined our workflow and improved communication across our entire team." },
-    { name: "Roger Deakins", role: "Cinematographer", quote: "FilmDash's visual planning tools have become an integral part of my pre-production process." },
+    { name: "Christopher Nolan", role: "Director", quote: "FilmCollab revolutionized how we manage our productions. It's an indispensable tool for any serious filmmaker." },
+    { name: "Ava DuVernay", role: "Producer", quote: "The collaborative features in FilmCollab have streamlined our workflow and improved communication across our entire team." },
+    { name: "Roger Deakins", role: "Cinematographer", quote: "FilmCollab's visual planning tools have become an integral part of my pre-production process." },
   ]
 
   return (
@@ -47,13 +50,13 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <Image
-              src="/placeholder.svg?height=40&width=40&text=FD"
-              alt="FilmDash Logo"
+              src="/placeholder.svg?height=20&width=40&text=FD"
+              alt="FilmCollab Logo"
               width={40}
               height={40}
               className="rounded-full bg-white"
             />
-            <span className="text-2xl font-bold">FilmDash</span>
+            <span className="text-2xl font-bold">FilmCollab</span>
           </div>
           <nav className="hidden md:flex space-x-6">
             <a href="#features" className="text-sm hover:text-blue-400 transition-colors">Features</a>
@@ -102,14 +105,18 @@ export default function LandingPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl sm:text-2xl max-w-3xl mx-auto"
             >
-              Streamline production, collaborate seamlessly, and bring your vision to life with FilmDash.
+              Streamline production, collaborate seamlessly, and bring your vision to life with FilmCollab.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <Button size="lg" className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 transition-colors">
+              <Button 
+                size="lg" 
+                className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 transition-colors"
+                onClick={() => router.push('/dashboard')}
+              >
                 Start Your Free Trial
               </Button>
             </motion.div>
@@ -156,7 +163,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 transform skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
                 <Image
                   src="/placeholder.svg?height=400&width=600&text=Dashboard+Preview"
-                  alt="FilmDash Dashboard Preview"
+                  alt="FilmCollab Dashboard Preview"
                   width={600}
                   height={400}
                   className="relative rounded-lg shadow-2xl"
@@ -255,15 +262,15 @@ export default function LandingPage() {
             <h2 className="text-4xl font-bold text-center mb-16">Frequently Asked Questions</h2>
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
-                <AccordionTrigger>How does FilmDash handle data security?</AccordionTrigger>
+                <AccordionTrigger>How does FilmCollab handle data security?</AccordionTrigger>
                 <AccordionContent>
-                  FilmDash employs industry-standard encryption and security measures to protect your data. We use secure cloud storage and regular backups to ensure your projects are safe and accessible only to authorized team members.
+                  FilmCollab employs industry-standard encryption and security measures to protect your data. We use secure cloud storage and regular backups to ensure your projects are safe and accessible only to authorized team members.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger>Can I integrate FilmDash with other tools?</AccordionTrigger>
+                <AccordionTrigger>Can I integrate FilmCollab with other tools?</AccordionTrigger>
                 <AccordionContent>
-                  Yes, FilmDash offers integrations with popular filmmaking and project management tools. Our API also allows for custom integrations to fit your specific workflow needs.
+                  Yes, FilmCollab offers integrations with popular filmmaking and project management tools. Our API also allows for custom integrations to fit your specific workflow needs.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
@@ -300,7 +307,7 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-center space-x-4">
                     <Icons.mail className="h-6 w-6 text-blue-400" />
-                    <span>contact@filmdash.com</span>
+                    <span>contact@FilmCollab.com</span>
                   </div>
                 </div>
               </div>
@@ -379,7 +386,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center">
-            <p className="text-gray-400">© 2024 FilmDash. All rights reserved.</p>
+            <p className="text-gray-400">© 2024 FilmCollab. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 sm:mt-0">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <Icons.facebook className="h-6 w-6" />
