@@ -50,7 +50,7 @@ export default function LocationScoutingPage() {
     (categoryFilter === "All" || location.category === categoryFilter)
   )
 
-  const handleCreateLocation = (e) => {
+  const handleCreateLocation = (e) => {  // Remove the ': React.FormEvent' type annotation
     e.preventDefault()
     const createdLocation = {
       ...newLocation,
@@ -60,6 +60,7 @@ export default function LocationScoutingPage() {
     setLocations([...locations, createdLocation])
     setNewLocation({ name: "", category: "", address: "", cost: "", availability: "", pros: "", cons: "", imageUrl: "" })
   }
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -71,7 +72,7 @@ export default function LocationScoutingPage() {
               <Plus className="mr-2 h-4 w-4" /> Add New Location
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-white">
+          <DialogContent className="sm:max-w-[425px] ">
             <DialogHeader>
               <DialogTitle>Add New Location</DialogTitle>
               <DialogDescription>
@@ -247,9 +248,9 @@ export default function LocationScoutingPage() {
       </div>
 
       <Dialog open={!!selectedLocation} onOpenChange={() => setSelectedLocation(null)}>
-        <DialogContent className="sm:max-w-[725px]">
+        <DialogContent className="sm:max-w-[725px] bg-white">
           <DialogHeader>
-            <DialogTitle>{selectedLocation.name}</DialogTitle>
+            <DialogTitle>{selectedLocation?.name}</DialogTitle>
           </DialogHeader>
           {selectedLocation && (
             <div className="grid grid-cols-2 gap-4">
@@ -323,7 +324,7 @@ export default function LocationScoutingPage() {
                 <div className="mt-4">
                   <Button className="w-full">
                     <Camera className="mr-2 h-4 w-4" />
-                    Upload More Photos
+                    Book Location
                   </Button>
                 </div>
               </div>
