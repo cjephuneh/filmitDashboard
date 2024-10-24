@@ -52,8 +52,8 @@ export default function LandingPage() {
             <Image
               src="/placeholder.svg?height=20&width=40&text=FD"
               alt="FilmCollab Logo"
-              width={40}
-              height={40}
+              width={20}
+              height={20}
               className="rounded-full bg-white"
             />
             <span className="text-2xl font-bold">FilmCollab</span>
