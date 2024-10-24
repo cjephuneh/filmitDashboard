@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Film, BarChart, Users, DollarSign, Calendar, Settings, Menu, Bell, Search, FileText, Briefcase, MessageSquare, Star, Clapperboard } from 'lucide-react'
+import { Film, BarChart, Users, DollarSign, Calendar, Settings, Menu, Bell, Search, FileText, Briefcase, MessageSquare, Star, Clapperboard, LocateIcon } from 'lucide-react'
 
 const sidebarItems = [
   { icon: BarChart, label: 'Dashboard', href: '/dashboard' },
-  { icon: Film, label: 'Projects', href: '/dashboard/projects' },
+  { icon: Film, label: 'Projects', href: '/dashboard/Projects' },
   { icon: FileText, label: 'Bids', href: '/dashboard/bids' },
   { icon: Briefcase, label: 'Create Bid', href: '/dashboard/create-bid' },
   { icon: Users, label: 'Team', href: '/dashboard/team' },
@@ -21,6 +21,7 @@ const sidebarItems = [
   { icon: Star, label: 'Talent Pool', href: '/dashboard/talent-pool' },
   { icon: Clapperboard, label: 'Equipment', href: '/dashboard/equipment' },
   { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+  { icon: LocateIcon, label: 'locations', href: '/dashboard/location-scouting' },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -28,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname()
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-white">
       {/* Sidebar */}
       <aside
         className={cn(

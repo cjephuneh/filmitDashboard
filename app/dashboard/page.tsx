@@ -31,7 +31,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview")
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <Button>Create New Project</Button>

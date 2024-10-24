@@ -1,17 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { DatePicker } from "@/components/ui/date-picker"
+// import { DatePicker } from "@/components/ui/date-picker"
 import { Checkbox } from "@/components/ui/checkbox"
 
 export default function CreateBid() {
-  const [bidDeadline, setBidDeadline] = useState<Date>()
+  // const [bidDeadline, setBidDeadline] = useState<Date>()
 
   return (
     <div className="space-y-6">
@@ -74,7 +74,7 @@ export default function CreateBid() {
           </div>
           <div className="space-y-2">
             <Label>Bid Deadline</Label>
-            <DatePicker date={bidDeadline} setDate={setBidDeadline} />
+            {/* <DatePicker date={bidDeadline} setDate={setBidDeadline} /> */}
           </div>
           <div className="space-y-2">
             <Label htmlFor="additional-requirements">Additional Requirements</Label>

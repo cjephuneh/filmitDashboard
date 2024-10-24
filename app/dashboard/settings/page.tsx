@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Bell, Lock, User, Globe, Mail, Phone } from 'lucide-react'
+import { Bell, Lock, Globe, Mail, Phone } from 'lucide-react'
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState("profile")
