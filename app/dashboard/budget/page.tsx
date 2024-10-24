@@ -95,7 +95,7 @@ export default function Budget() {
               <DialogTrigger asChild>
                 <Button>Add Expense</Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className='bg-white'>
                 <DialogHeader>
                   <DialogTitle>Add New Expense</DialogTitle>
                   <DialogDescription>Add a new expense to your project budget</DialogDescription>

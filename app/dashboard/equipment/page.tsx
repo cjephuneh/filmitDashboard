@@ -53,7 +53,7 @@ export default function Equipment() {
               Add Equipment
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className='bg-white'>
             <DialogHeader>
               <DialogTitle>Add New Equipment</DialogTitle>
               <DialogDescription>Enter the details of the new equipment item</DialogDescription>

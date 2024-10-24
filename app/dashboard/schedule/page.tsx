@@ -55,7 +55,7 @@ export default function Schedule() {
             <DialogTrigger asChild>
               <Button>Add Event</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className='bg-white'>
               <DialogHeader>
                 <DialogTitle>Add New Event</DialogTitle>
                 <DialogDescription>Schedule a new event for your project</DialogDescription>
