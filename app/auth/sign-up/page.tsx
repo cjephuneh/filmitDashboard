@@ -40,6 +40,9 @@ function SignUpPage() {
 
       if (!response.ok) throw new Error('Signup failed')
       
+      const data = await response.json()
+      localStorage.setItem('token', data.token)
+      
       toast.success('Welcome to the film community!', {
         id: loadingToast,
       })
