@@ -42,13 +42,13 @@ export default function Schedule() {
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Select project" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Projects</SelectItem>
-              <SelectItem value="Neon Nights">Neon Nights</SelectItem>
-              <SelectItem value="Whispers in the Wind">Whispers in the Wind</SelectItem>
-              <SelectItem value="Quantum Leap">Quantum Leap</SelectItem>
-              <SelectItem value="Echoes of Yesterday">Echoes of Yesterday</SelectItem>
-              <SelectItem value="Midnight Serenade">Midnight Serenade</SelectItem>
+            <SelectContent className='bg-white '>
+              <SelectItem value="all" className='hover:bg-slate-300'>All Projects</SelectItem>
+              <SelectItem value="Neon Nights" className='hover:bg-slate-300'>Neon Nights</SelectItem>
+              <SelectItem value="Whispers in the Wind" className='hover:bg-slate-300'>Whispers in the Wind</SelectItem>
+              <SelectItem value="Quantum Leap" className='hover:bg-slate-300'>Quantum Leap</SelectItem>
+              <SelectItem value="Echoes of Yesterday" className='hover:bg-slate-300'>Echoes of Yesterday</SelectItem>
+              <SelectItem value="Midnight Serenade" className='hover:bg-slate-300'>Midnight Serenade</SelectItem>
             </SelectContent>
           </Select>
           <Dialog open={isAddEventDialogOpen} onOpenChange={setIsAddEventDialogOpen}>

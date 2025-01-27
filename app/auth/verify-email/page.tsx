@@ -31,7 +31,7 @@ function VerifyEmailPage() {
       if (!response.ok) throw new Error('Verification failed')
 
       toast.success('Email verified successfully!', { id: loadingToast })
-      router.push('/auth/login')
+      router.push('/auth/sign-in')
     } catch (error) {
       console.error('Verification error:', error)
       toast.error('Invalid verification code', { id: loadingToast })

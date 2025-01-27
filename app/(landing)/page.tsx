@@ -72,7 +72,9 @@ export default function LandingPage() {
               className="data-[state=checked]:bg-blue-600"
             />
             <span className="text-sm">{isDarkMode ? 'Dark' : 'Light'} Mode</span>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm"
+              onClick={() => router.push('/auth/sign-in')}
+            >
               Log In
             </Button>
           </div>

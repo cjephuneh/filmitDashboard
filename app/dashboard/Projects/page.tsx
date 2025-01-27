@@ -1,86 +1,175 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Film, Search, Plus, Calendar, Users, DollarSign } from 'lucide-react'
+import { Film, Search, Plus, Calendar, Users, DollarSign, Edit, Trash } from 'lucide-react'
+import { Toaster, toast } from 'react-hot-toast'
 
-// Mock data for projects
-const mockProjects = [
-  { id: 1, title: "The Last Frontier", status: "In Progress", dueDate: "2024-12-31", budget: 5000000, team: 50 },
-  { id: 2, title: "Echoes of Tomorrow", status: "Planning", dueDate: "2025-06-30", budget: 3000000, team: 30 },
-  { id: 3, title: "Whispers in the Wind", status: "Completed", dueDate: "2024-03-15", budget: 1000000, team: 20 },
-  { id: 4, title: "Neon Nights", status: "In Progress", dueDate: "2024-09-30", budget: 4000000, team: 40 },
-  { id: 5, title: "Sands of Time", status: "Planning", dueDate: "2025-02-28", budget: 6000000, team: 60 },
-  { id: 6, title: "Starfall", status: "In Progress", dueDate: "2024-11-15", budget: 8000000, team: 75 },
-]
+interface Project {
+  id: number
+  title: string
+  status: 'Planning' | 'In Progress' | 'Completed'
+  dueDate: string
+  budget: number
+  team: number
+}
+
+interface FormData {
+  title: string
+  status: string
+  dueDate: string
+  budget: string
+  team: string
+}
 
 export default function ProjectsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("All")
-  const [newProject, setNewProject] = useState({ title: "", status: "", dueDate: "", budget: "", team: "" })
+  const [searchTerm, setSearchTerm] = useState<string>("")
+  const [statusFilter, setStatusFilter] = useState<string>("All")
+  const [projects, setProjects] = useState<Project[]>([])
+  const [formData, setFormData] = useState<FormData>({ 
+    title: "", status: "", dueDate: "", budget: "", team: "" 
+  })
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isEditMode, setIsEditMode] = useState<boolean>(false)
+  const [editingId, setEditingId] = useState<number | null>(null)
 
-  const filteredProjects = mockProjects.filter(project => 
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async (): Promise<void> => {
+    try {
+      setIsLoading(true)
+      const token = localStorage.getItem('token')
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (!response.ok) throw new Error('Failed to fetch projects')
+      const data = await response.json()
+      setProjects(data)
+    } catch (error) {
+      toast.error('Failed to load projects')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault()
+    try {
+      setIsLoading(true)
+      const token = localStorage.getItem('token')
+      const url = isEditMode 
+        ? `${process.env.NEXT_PUBLIC_API_URL}/projects/${editingId}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/projects`
+      
+      const response = await fetch(url, {
+        method: isEditMode ? 'PUT' : 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...formData,
+          budget: Number(formData.budget),
+          team: Number(formData.team)
+        })
+      })
+
+      if (!response.ok) throw new Error(isEditMode ? 'Failed to update project' : 'Failed to create project')
+      
+      toast.success(isEditMode ? 'Project updated successfully' : 'Project created successfully')
+      resetForm()
+      fetchProjects()
+    } catch (error) {
+      toast.error(isEditMode ? 'Failed to update project' : 'Failed to create project')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleDelete = async (id: number): Promise<void> => {
+    if (!confirm('Are you sure you want to delete this project?')) return
+    try {
+      setIsLoading(true)
+      const token = localStorage.getItem('token')
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      if (!response.ok) throw new Error('Failed to delete project')
+      toast.success('Project deleted successfully')
+      fetchProjects()
+    } catch (error) {
+      toast.error('Failed to delete project')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleEdit = (project: Project): void => {
+    setFormData({
+      title: project.title,
+      status: project.status,
+      dueDate: project.dueDate,
+      budget: project.budget.toString(),
+      team: project.team.toString()
+    })
+    setEditingId(project.id)
+    setIsEditMode(true)
+  }
+
+  const resetForm = (): void => {
+    setFormData({ title: "", status: "", dueDate: "", budget: "", team: "" })
+    setIsEditMode(false)
+    setEditingId(null)
+  }
+
+  const filteredProjects = projects.filter(project => 
     project.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (statusFilter === "All" || project.status === statusFilter)
   )
 
-  const handleCreateProject = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the new project data to your backend
-    console.log("Creating new project:", newProject)
-    // Reset the form
-    setNewProject({ title: "", status: "", dueDate: "", budget: "", team: "" })
-  }
-
   return (
     <div className="container mx-auto px-4 py-8">
+      <Toaster />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Film Projects</h1>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
-              <Plus className="mr-2 h-4 w-4" /> Create New Project
+              <Plus className="mr-2 h-4 w-4" /> {isEditMode ? 'Edit Project' : 'Create New Project'}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-white">
+          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Create New Project</DialogTitle>
+              <DialogTitle>{isEditMode ? 'Edit Project' : 'Create New Project'}</DialogTitle>
               <DialogDescription>
-                Enter the details for your new film project here.
+                {isEditMode ? 'Edit project details below.' : 'Enter the details for your new film project here.'}
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleCreateProject}>
-              <div className="grid gap-4 py-4 ">
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right">
-                    Title
-                  </Label>
+                  <Label htmlFor="title" className="text-right">Title</Label>
                   <Input
                     id="title"
-                    value={newProject.title}
-                    onChange={(e) => setNewProject({...newProject, title: e.target.value})}
+                    value={formData.title}
+                    onChange={(e) => setFormData({...formData, title: e.target.value})}
                     className="col-span-3"
+                    required
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="status" className="text-right">
-                    Status
-                  </Label>
+                  <Label htmlFor="status" className="text-right">Status</Label>
                   <Select
-                    onValueChange={(value) => setNewProject({...newProject, status: value})}
+                    value={formData.status}
+                    onValueChange={(value) => setFormData({...formData, status: value})}
                   >
                     <SelectTrigger className="col-span-3">
                       <SelectValue placeholder="Select status" />
@@ -93,44 +182,43 @@ export default function ProjectsPage() {
                   </Select>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="dueDate" className="text-right">
-                    Due Date
-                  </Label>
+                  <Label htmlFor="dueDate" className="text-right">Due Date</Label>
                   <Input
                     id="dueDate"
                     type="date"
-                    value={newProject.dueDate}
-                    onChange={(e) => setNewProject({...newProject, dueDate: e.target.value})}
+                    value={formData.dueDate}
+                    onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
                     className="col-span-3"
+                    required
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="budget" className="text-right">
-                    Budget ($)
-                  </Label>
+                  <Label htmlFor="budget" className="text-right">Budget ($)</Label>
                   <Input
                     id="budget"
                     type="number"
-                    value={newProject.budget}
-                    onChange={(e) => setNewProject({...newProject, budget: e.target.value})}
+                    value={formData.budget}
+                    onChange={(e) => setFormData({...formData, budget: e.target.value})}
                     className="col-span-3"
+                    required
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="team" className="text-right">
-                    Team Size
-                  </Label>
+                  <Label htmlFor="team" className="text-right">Team Size</Label>
                   <Input
                     id="team"
                     type="number"
-                    value={newProject.team}
-                    onChange={(e) => setNewProject({...newProject, team: e.target.value})}
+                    value={formData.team}
+                    onChange={(e) => setFormData({...formData, team: e.target.value})}
                     className="col-span-3"
+                    required
                   />
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit">Create Project</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? 'Processing...' : isEditMode ? 'Save Changes' : 'Create Project'}
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -148,7 +236,7 @@ export default function ProjectsPage() {
             className="pl-10"
           />
         </div>
-        <Select onValueChange={setStatusFilter}>
+        <Select onValueChange={setStatusFilter} defaultValue="All">
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
@@ -171,7 +259,7 @@ export default function ProjectsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Status: {project.status}</p>
+              <p className="text-sm text-gray-500">Status: {project.status}</p>
               <div className="mt-4 space-y-2">
                 <div className="flex items-center">
                   <Calendar className="mr-2 h-4 w-4" />
@@ -187,17 +275,28 @@ export default function ProjectsPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button variant="outline" className="w-full">View Details</Button>
+            <CardFooter className="flex justify-between space-x-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => handleEdit(project)}
+                disabled={isLoading}
+              >
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </Button>
+              <Button
+                variant="destructive"
+                className="flex-1"
+                onClick={() => handleDelete(project.id)}
+                disabled={isLoading}
+              >
+                <Trash className="mr-2 h-4 w-4" />
+                Delete
+              </Button>
             </CardFooter>
           </Card>
         ))}
-      </div>
-
-      {/* Pagination placeholder */}
-      <div className="mt-8 flex justify-center">
-        <Button variant="outline" className="mx-2">Previous</Button>
-        <Button variant="outline" className="mx-2">Next</Button>
       </div>
     </div>
   )
